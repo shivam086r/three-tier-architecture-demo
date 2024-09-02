@@ -1,0 +1,56 @@
+az aks get-credentials --resource-group ecomerce-demo --name threetier
+
+kubectl get pods
+
+kubectl config curret-context
+
+cd AKS/helm
+ls
+
+kubectl create ns robot-shop
+
+helm install robot-shop --namespace robot-shop .
+
+kubectl get storageclass
+
+kubectl get pods -n robot-shop
+
+kubectl describe pod redis-0 -n robot-shop
+
+kubectl edit pod redis-0 -n robot-shop (you can see persistant volume claim there)
+
+kubectl get pvc -n robot-shop
+
+kubectl get pods -n robot-shop
+
+kubectl get svc -n robot-shop
+
+###### enabling engress config #####
+
+go to AKS Cluster
+ Networking > enable ingress controller checkbox > apply
+Note: on EKS you have to deploy helm chart for ingresscontroller & configure csi driver for EBS but azure provide it natively
+
+vim ingress (ingerss file is in same folder) you have to configure ingressClassName for your ingress, because your ingress controller look for it to configure ingress 
+
+kubectl apply -f ingress.yaml -n robot-shop
+
+kubectl get pods -n kube-system
+
+kubectl get pods -A | grep ingress-appgw
+
+kubectl edit deploy ingress-appgw-deployment -n kube-system
+
+kubectl get ing -n robot-shop
+
+kubectl logs deploy/ingress-appgw-deployment -n kube-system
+
+kubectl delete pod ingress-appgw-deployment-8547f8676d-8b2x5 -n kube-system
+
+ kubectl get pods -n kube-system
+
+ kubectl logs deploy/ingress-appgw-deployment -n kube-system
+
+ kubectl get ing -n robot-shop
+
+ ip on browser 
